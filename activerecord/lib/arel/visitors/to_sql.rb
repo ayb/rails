@@ -894,8 +894,10 @@ module Arel # :nodoc: all
           visit thing, collector
         end
 
+        # https://github.com/rails/rails/issues/46628#issuecomment-1334292919
+        # THIS IS THE CAUSE OF OUR ERRORS
         def inject_join(list, collector, join_str)
-          list.each_with_index do |x, i|
+          (list || []).each_with_index do |x, i|
             collector << join_str unless i == 0
             collector = visit(x, collector)
           end
